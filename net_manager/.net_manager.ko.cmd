@@ -1,0 +1,1 @@
+cmd_/home/tyxm/tmp/net_manager/net_manager.ko := ld -r -m elf_i386 -T /usr/src/linux-headers-3.11.0-12-generic/scripts/module-common.lds --build-id  -o /home/tyxm/tmp/net_manager/net_manager.ko /home/tyxm/tmp/net_manager/net_manager.o /home/tyxm/tmp/net_manager/net_manager.mod.o
