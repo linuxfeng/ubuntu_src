@@ -1,0 +1,1 @@
+cmd_/home/tyxm/src/ubuntu_src/net_manager/libNet.o := ld -m elf_i386   -r -o /home/tyxm/src/ubuntu_src/net_manager/libNet.o /home/tyxm/src/ubuntu_src/net_manager/net_manager.o /home/tyxm/src/ubuntu_src/net_manager/client.o 

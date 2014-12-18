@@ -3,8 +3,8 @@
 #
 #
 
-obj-m := net_manager.o
-libRbnet-objs := net_manager.o procfs.o 
+obj-m := libNet.o
+libNet-objs := net_manager.o client.o
 
 
 KERNELDIR ?= /lib/modules/$(shell uname -r)/build

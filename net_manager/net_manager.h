@@ -1,7 +1,7 @@
 #ifndef __NET_MANAGER_H__
 #define __NET_MANAGER_H__ 
 
-
+#include <linux/time.h>
 
 #define WLANDEVICE ("wl0.1")
 #define FUN_OK 0   //
@@ -42,12 +42,8 @@ typedef struct client_list{
 	CLIENT client;
 } CLIENT_LIST;
 
-struct list_head *newClient;
-extern void client_init(void);
-extern CLIENT_LIST * findNode(CLIENT_LIST *target);
-extern int updateDate(CLIENT_LIST *linkData, CLIENT_LIST *newData);
-extern int checkNew(CLIENT_LIST  *client); 
-extern int addClient(CLIENT_LIST *client, struct list_head *newClientList);
-extern int client_exit();
+extern struct list_head *newClient;
+
+
 
 #endif 

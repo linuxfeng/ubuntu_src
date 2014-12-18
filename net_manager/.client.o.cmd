@@ -1,42 +1,24 @@
-cmd_/home/tyxm/src/ubuntu_src/net_manager/net_manager.mod.o := gcc -Wp,-MD,/home/tyxm/src/ubuntu_src/net_manager/.net_manager.mod.o.d  -nostdinc -isystem /usr/lib/gcc/i686-linux-gnu/4.8/include  -I/usr/src/linux-headers-3.11.0-12-generic/arch/x86/include -Iarch/x86/include/generated  -Iinclude -I/usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/uapi -Iarch/x86/include/generated/uapi -I/usr/src/linux-headers-3.11.0-12-generic/include/uapi -Iinclude/generated/uapi -include /usr/src/linux-headers-3.11.0-12-generic/include/linux/kconfig.h -Iubuntu/include  -D__KERNEL__ -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -Werror-implicit-function-declaration -Wno-format-security -fno-delete-null-pointer-checks -O2 -m32 -msoft-float -mregparm=3 -freg-struct-return -fno-pic -mpreferred-stack-boundary=2 -march=i686 -mtune=generic -maccumulate-outgoing-args -Wa,-mtune=generic32 -ffreestanding -fstack-protector -DCONFIG_AS_CFI=1 -DCONFIG_AS_CFI_SIGNAL_FRAME=1 -DCONFIG_AS_CFI_SECTIONS=1 -DCONFIG_AS_AVX=1 -DCONFIG_AS_AVX2=1 -pipe -Wno-sign-compare -fno-asynchronous-unwind-tables -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx -Wframe-larger-than=1024 -Wno-unused-but-set-variable -fno-omit-frame-pointer -fno-optimize-sibling-calls -pg -Wdeclaration-after-statement -Wno-pointer-sign -fno-strict-overflow -fconserve-stack -DCC_HAVE_ASM_GOTO  -D"KBUILD_STR(s)=\#s" -D"KBUILD_BASENAME=KBUILD_STR(net_manager.mod)"  -D"KBUILD_MODNAME=KBUILD_STR(net_manager)" -DMODULE  -c -o /home/tyxm/src/ubuntu_src/net_manager/net_manager.mod.o /home/tyxm/src/ubuntu_src/net_manager/net_manager.mod.c
+cmd_/home/tyxm/src/ubuntu_src/net_manager/client.o := gcc -Wp,-MD,/home/tyxm/src/ubuntu_src/net_manager/.client.o.d  -nostdinc -isystem /usr/lib/gcc/i686-linux-gnu/4.8/include  -I/usr/src/linux-headers-3.11.0-12-generic/arch/x86/include -Iarch/x86/include/generated  -Iinclude -I/usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/uapi -Iarch/x86/include/generated/uapi -I/usr/src/linux-headers-3.11.0-12-generic/include/uapi -Iinclude/generated/uapi -include /usr/src/linux-headers-3.11.0-12-generic/include/linux/kconfig.h -Iubuntu/include  -D__KERNEL__ -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -Werror-implicit-function-declaration -Wno-format-security -fno-delete-null-pointer-checks -O2 -m32 -msoft-float -mregparm=3 -freg-struct-return -fno-pic -mpreferred-stack-boundary=2 -march=i686 -mtune=generic -maccumulate-outgoing-args -Wa,-mtune=generic32 -ffreestanding -fstack-protector -DCONFIG_AS_CFI=1 -DCONFIG_AS_CFI_SIGNAL_FRAME=1 -DCONFIG_AS_CFI_SECTIONS=1 -DCONFIG_AS_AVX=1 -DCONFIG_AS_AVX2=1 -pipe -Wno-sign-compare -fno-asynchronous-unwind-tables -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx -Wframe-larger-than=1024 -Wno-unused-but-set-variable -fno-omit-frame-pointer -fno-optimize-sibling-calls -pg -Wdeclaration-after-statement -Wno-pointer-sign -fno-strict-overflow -fconserve-stack -DCC_HAVE_ASM_GOTO  -DMODULE  -D"KBUILD_STR(s)=\#s" -D"KBUILD_BASENAME=KBUILD_STR(client)"  -D"KBUILD_MODNAME=KBUILD_STR(libNet)" -c -o /home/tyxm/src/ubuntu_src/net_manager/.tmp_client.o /home/tyxm/src/ubuntu_src/net_manager/client.c
 
-source_/home/tyxm/src/ubuntu_src/net_manager/net_manager.mod.o := /home/tyxm/src/ubuntu_src/net_manager/net_manager.mod.c
+source_/home/tyxm/src/ubuntu_src/net_manager/client.o := /home/tyxm/src/ubuntu_src/net_manager/client.c
 
-deps_/home/tyxm/src/ubuntu_src/net_manager/net_manager.mod.o := \
-    $(wildcard include/config/module/unload.h) \
-  include/linux/module.h \
-    $(wildcard include/config/sysfs.h) \
-    $(wildcard include/config/modules.h) \
-    $(wildcard include/config/unused/symbols.h) \
-    $(wildcard include/config/module/sig.h) \
-    $(wildcard include/config/generic/bug.h) \
-    $(wildcard include/config/kallsyms.h) \
+deps_/home/tyxm/src/ubuntu_src/net_manager/client.o := \
+  /home/tyxm/src/ubuntu_src/net_manager/net_manager.h \
+  include/linux/time.h \
+    $(wildcard include/config/arch/uses/gettimeoffset.h) \
+  include/linux/cache.h \
     $(wildcard include/config/smp.h) \
-    $(wildcard include/config/tracepoints.h) \
-    $(wildcard include/config/tracing.h) \
-    $(wildcard include/config/event/tracing.h) \
-    $(wildcard include/config/ftrace/mcount/record.h) \
-    $(wildcard include/config/constructors.h) \
-    $(wildcard include/config/debug/set/module/ronx.h) \
-  include/linux/list.h \
-    $(wildcard include/config/debug/list.h) \
-  include/linux/types.h \
-    $(wildcard include/config/uid16.h) \
+    $(wildcard include/config/arch/has/cache/line/size.h) \
+  include/linux/kernel.h \
     $(wildcard include/config/lbdaf.h) \
-    $(wildcard include/config/arch/dma/addr/t/64bit.h) \
-    $(wildcard include/config/phys/addr/t/64bit.h) \
-    $(wildcard include/config/64bit.h) \
-  include/uapi/linux/types.h \
-  /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/uapi/asm/types.h \
-  /usr/src/linux-headers-3.11.0-12-generic/include/uapi/asm-generic/types.h \
-  include/asm-generic/int-ll64.h \
-  include/uapi/asm-generic/int-ll64.h \
-  /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/uapi/asm/bitsperlong.h \
-  include/asm-generic/bitsperlong.h \
-  include/uapi/asm-generic/bitsperlong.h \
-  /usr/src/linux-headers-3.11.0-12-generic/include/uapi/linux/posix_types.h \
-  include/linux/stddef.h \
-  include/uapi/linux/stddef.h \
+    $(wildcard include/config/preempt/voluntary.h) \
+    $(wildcard include/config/debug/atomic/sleep.h) \
+    $(wildcard include/config/prove/locking.h) \
+    $(wildcard include/config/ring/buffer.h) \
+    $(wildcard include/config/tracing.h) \
+    $(wildcard include/config/ftrace/mcount/record.h) \
+  /usr/lib/gcc/i686-linux-gnu/4.8/include/stdarg.h \
+  include/linux/linkage.h \
   include/linux/compiler.h \
     $(wildcard include/config/sparse/rcu/pointer.h) \
     $(wildcard include/config/trace/branch/profiling.h) \
@@ -49,34 +31,35 @@ deps_/home/tyxm/src/ubuntu_src/net_manager/net_manager.mod.o := \
     $(wildcard include/config/optimize/inlining.h) \
   include/linux/compiler-gcc4.h \
     $(wildcard include/config/arch/use/builtin/bswap.h) \
-  /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/asm/posix_types.h \
-    $(wildcard include/config/x86/32.h) \
-  /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/uapi/asm/posix_types_32.h \
-  /usr/src/linux-headers-3.11.0-12-generic/include/uapi/asm-generic/posix_types.h \
-  include/linux/poison.h \
-    $(wildcard include/config/illegal/pointer/value.h) \
-  /usr/src/linux-headers-3.11.0-12-generic/include/uapi/linux/const.h \
-  include/linux/stat.h \
-  /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/uapi/asm/stat.h \
-  include/uapi/linux/stat.h \
-  include/linux/time.h \
-    $(wildcard include/config/arch/uses/gettimeoffset.h) \
-  include/linux/cache.h \
-    $(wildcard include/config/arch/has/cache/line/size.h) \
-  include/linux/kernel.h \
-    $(wildcard include/config/preempt/voluntary.h) \
-    $(wildcard include/config/debug/atomic/sleep.h) \
-    $(wildcard include/config/prove/locking.h) \
-    $(wildcard include/config/ring/buffer.h) \
-  /usr/lib/gcc/i686-linux-gnu/4.8/include/stdarg.h \
-  include/linux/linkage.h \
   include/linux/stringify.h \
   include/linux/export.h \
     $(wildcard include/config/have/underscore/symbol/prefix.h) \
+    $(wildcard include/config/modules.h) \
     $(wildcard include/config/modversions.h) \
+    $(wildcard include/config/unused/symbols.h) \
   /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/asm/linkage.h \
+    $(wildcard include/config/x86/32.h) \
     $(wildcard include/config/x86/64.h) \
     $(wildcard include/config/x86/alignment/16.h) \
+  include/linux/stddef.h \
+  include/uapi/linux/stddef.h \
+  include/linux/types.h \
+    $(wildcard include/config/uid16.h) \
+    $(wildcard include/config/arch/dma/addr/t/64bit.h) \
+    $(wildcard include/config/phys/addr/t/64bit.h) \
+    $(wildcard include/config/64bit.h) \
+  include/uapi/linux/types.h \
+  /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/uapi/asm/types.h \
+  /usr/src/linux-headers-3.11.0-12-generic/include/uapi/asm-generic/types.h \
+  include/asm-generic/int-ll64.h \
+  include/uapi/asm-generic/int-ll64.h \
+  /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/uapi/asm/bitsperlong.h \
+  include/asm-generic/bitsperlong.h \
+  include/uapi/asm-generic/bitsperlong.h \
+  /usr/src/linux-headers-3.11.0-12-generic/include/uapi/linux/posix_types.h \
+  /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/asm/posix_types.h \
+  /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/uapi/asm/posix_types_32.h \
+  /usr/src/linux-headers-3.11.0-12-generic/include/uapi/asm-generic/posix_types.h \
   include/linux/bitops.h \
   /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/asm/bitops.h \
     $(wildcard include/config/x86/cmov.h) \
@@ -143,6 +126,7 @@ deps_/home/tyxm/src/ubuntu_src/net_manager/net_manager.mod.o := \
     $(wildcard include/config/compat.h) \
     $(wildcard include/config/debug/stack/usage.h) \
   include/linux/bug.h \
+    $(wildcard include/config/generic/bug.h) \
   /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/asm/bug.h \
     $(wildcard include/config/bug.h) \
     $(wildcard include/config/debug/bugverbose.h) \
@@ -152,6 +136,7 @@ deps_/home/tyxm/src/ubuntu_src/net_manager/net_manager.mod.o := \
     $(wildcard include/config/ia32/emulation.h) \
   /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/asm/page.h \
   /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/asm/page_types.h \
+  /usr/src/linux-headers-3.11.0-12-generic/include/uapi/linux/const.h \
   /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/asm/page_32_types.h \
     $(wildcard include/config/highmem4g.h) \
     $(wildcard include/config/highmem64g.h) \
@@ -256,6 +241,10 @@ deps_/home/tyxm/src/ubuntu_src/net_manager/net_manager.mod.o := \
   /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/asm/cmpxchg_32.h \
   /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/asm/atomic64_32.h \
   include/asm-generic/atomic-long.h \
+  include/linux/list.h \
+    $(wildcard include/config/debug/list.h) \
+  include/linux/poison.h \
+    $(wildcard include/config/illegal/pointer/value.h) \
   include/linux/bottom_half.h \
   /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/asm/barrier.h \
     $(wildcard include/config/x86/ppro/fence.h) \
@@ -301,61 +290,58 @@ deps_/home/tyxm/src/ubuntu_src/net_manager/net_manager.mod.o := \
     $(wildcard include/config/inline/read/unlock/irqrestore.h) \
     $(wildcard include/config/inline/write/unlock/irqrestore.h) \
   include/uapi/linux/time.h \
-  include/linux/uidgid.h \
-    $(wildcard include/config/uidgid/strict/type/checks.h) \
-    $(wildcard include/config/user/ns.h) \
-  include/linux/highuid.h \
-  include/linux/kmod.h \
-  include/linux/gfp.h \
+  include/linux/skbuff.h \
+    $(wildcard include/config/nf/conntrack.h) \
+    $(wildcard include/config/bridge/netfilter.h) \
+    $(wildcard include/config/nf/defrag/ipv4.h) \
+    $(wildcard include/config/nf/defrag/ipv6.h) \
+    $(wildcard include/config/xfrm.h) \
+    $(wildcard include/config/net/sched.h) \
+    $(wildcard include/config/net/cls/act.h) \
+    $(wildcard include/config/ipv6/ndisc/nodetype.h) \
+    $(wildcard include/config/net/dma.h) \
+    $(wildcard include/config/net/rx/busy/poll.h) \
+    $(wildcard include/config/network/secmark.h) \
+    $(wildcard include/config/network/phy/timestamping.h) \
+    $(wildcard include/config/netfilter/xt/target/trace.h) \
+  include/linux/kmemcheck.h \
+  include/linux/mm_types.h \
+    $(wildcard include/config/split/ptlock/cpus.h) \
+    $(wildcard include/config/have/cmpxchg/double.h) \
+    $(wildcard include/config/have/aligned/struct/page.h) \
+    $(wildcard include/config/want/page/debug/flags.h) \
+    $(wildcard include/config/mmu.h) \
     $(wildcard include/config/numa.h) \
-    $(wildcard include/config/zone/dma.h) \
-    $(wildcard include/config/zone/dma32.h) \
-    $(wildcard include/config/pm/sleep.h) \
-    $(wildcard include/config/cma.h) \
-  include/linux/mmzone.h \
-    $(wildcard include/config/force/max/zoneorder.h) \
-    $(wildcard include/config/memory/isolation.h) \
-    $(wildcard include/config/memcg.h) \
-    $(wildcard include/config/compaction.h) \
-    $(wildcard include/config/memory/hotplug.h) \
-    $(wildcard include/config/have/memblock/node/map.h) \
-    $(wildcard include/config/flat/node/mem/map.h) \
-    $(wildcard include/config/no/bootmem.h) \
+    $(wildcard include/config/aio.h) \
+    $(wildcard include/config/mm/owner.h) \
+    $(wildcard include/config/mmu/notifier.h) \
+    $(wildcard include/config/transparent/hugepage.h) \
     $(wildcard include/config/numa/balancing.h) \
-    $(wildcard include/config/have/memory/present.h) \
-    $(wildcard include/config/have/memoryless/nodes.h) \
-    $(wildcard include/config/need/node/memmap/size.h) \
-    $(wildcard include/config/need/multiple/nodes.h) \
-    $(wildcard include/config/have/arch/early/pfn/to/nid.h) \
-    $(wildcard include/config/sparsemem/extreme.h) \
-    $(wildcard include/config/have/arch/pfn/valid.h) \
-    $(wildcard include/config/nodes/span/other/nodes.h) \
-    $(wildcard include/config/holes/in/zone.h) \
-    $(wildcard include/config/arch/has/holes/memorymodel.h) \
+  include/linux/auxvec.h \
+  include/uapi/linux/auxvec.h \
+  /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/uapi/asm/auxvec.h \
+  include/linux/rbtree.h \
+  include/linux/rwsem.h \
+    $(wildcard include/config/rwsem/generic/spinlock.h) \
+  /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/asm/rwsem.h \
+  include/linux/completion.h \
   include/linux/wait.h \
   include/uapi/linux/wait.h \
-  include/linux/numa.h \
-    $(wildcard include/config/nodes/shift.h) \
-  include/linux/nodemask.h \
-    $(wildcard include/config/movable/node.h) \
-  include/linux/pageblock-flags.h \
-    $(wildcard include/config/hugetlb/page/size/variable.h) \
-  include/linux/page-flags-layout.h \
-  include/generated/bounds.h \
-  include/linux/memory_hotplug.h \
-    $(wildcard include/config/memory/hotremove.h) \
-    $(wildcard include/config/have/arch/nodedata/extension.h) \
-    $(wildcard include/config/have/bootmem/info/node.h) \
-  include/linux/notifier.h \
+  include/linux/page-debug-flags.h \
+    $(wildcard include/config/page/poisoning.h) \
+    $(wildcard include/config/page/guard.h) \
+    $(wildcard include/config/page/debug/something/else.h) \
+  include/linux/uprobes.h \
+    $(wildcard include/config/arch/supports/uprobes.h) \
+    $(wildcard include/config/uprobes.h) \
   include/linux/errno.h \
   include/uapi/linux/errno.h \
+  /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/asm/uprobes.h \
+  include/linux/notifier.h \
   include/linux/mutex.h \
     $(wildcard include/config/debug/mutexes.h) \
     $(wildcard include/config/mutex/spin/on/owner.h) \
     $(wildcard include/config/have/arch/mutex/cpu/relax.h) \
-  include/linux/rwsem.h \
-    $(wildcard include/config/rwsem/generic/spinlock.h) \
-  /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/asm/rwsem.h \
   include/linux/srcu.h \
   include/linux/rcupdate.h \
     $(wildcard include/config/rcu/torture/test.h) \
@@ -367,7 +353,6 @@ deps_/home/tyxm/src/ubuntu_src/net_manager/net_manager.mod.o := \
     $(wildcard include/config/tiny/rcu.h) \
     $(wildcard include/config/debug/objects/rcu/head.h) \
     $(wildcard include/config/rcu/nocb/cpu.h) \
-  include/linux/completion.h \
   include/linux/debugobjects.h \
     $(wildcard include/config/debug/objects.h) \
     $(wildcard include/config/debug/objects/free.h) \
@@ -375,6 +360,7 @@ deps_/home/tyxm/src/ubuntu_src/net_manager/net_manager.mod.o := \
   include/linux/workqueue.h \
     $(wildcard include/config/debug/objects/work.h) \
     $(wildcard include/config/freezer.h) \
+    $(wildcard include/config/sysfs.h) \
   include/linux/timer.h \
     $(wildcard include/config/timer/stats.h) \
     $(wildcard include/config/debug/objects/timers.h) \
@@ -391,6 +377,73 @@ deps_/home/tyxm/src/ubuntu_src/net_manager/net_manager.mod.o := \
   /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/asm/timex.h \
   /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/asm/tsc.h \
     $(wildcard include/config/x86/tsc.h) \
+  include/linux/page-flags-layout.h \
+  include/linux/numa.h \
+    $(wildcard include/config/nodes/shift.h) \
+  include/generated/bounds.h \
+  /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/asm/mmu.h \
+  include/linux/net.h \
+  include/linux/random.h \
+    $(wildcard include/config/arch/random.h) \
+  include/uapi/linux/random.h \
+  include/linux/irqnr.h \
+    $(wildcard include/config/generic/hardirqs.h) \
+  include/uapi/linux/irqnr.h \
+  /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/asm/archrandom.h \
+  include/linux/fcntl.h \
+  include/uapi/linux/fcntl.h \
+  /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/uapi/asm/fcntl.h \
+  /usr/src/linux-headers-3.11.0-12-generic/include/uapi/asm-generic/fcntl.h \
+  include/uapi/linux/net.h \
+  include/linux/socket.h \
+  /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/uapi/asm/socket.h \
+  /usr/src/linux-headers-3.11.0-12-generic/include/uapi/asm-generic/socket.h \
+  /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/uapi/asm/sockios.h \
+  /usr/src/linux-headers-3.11.0-12-generic/include/uapi/asm-generic/sockios.h \
+  /usr/src/linux-headers-3.11.0-12-generic/include/uapi/linux/sockios.h \
+  include/linux/uio.h \
+  include/uapi/linux/uio.h \
+  include/uapi/linux/socket.h \
+  include/linux/textsearch.h \
+  include/linux/slab.h \
+    $(wildcard include/config/slab/debug.h) \
+    $(wildcard include/config/failslab.h) \
+    $(wildcard include/config/slob.h) \
+    $(wildcard include/config/slab.h) \
+    $(wildcard include/config/slub.h) \
+    $(wildcard include/config/zone/dma.h) \
+    $(wildcard include/config/debug/slab.h) \
+  include/linux/gfp.h \
+    $(wildcard include/config/zone/dma32.h) \
+    $(wildcard include/config/pm/sleep.h) \
+    $(wildcard include/config/cma.h) \
+  include/linux/mmzone.h \
+    $(wildcard include/config/force/max/zoneorder.h) \
+    $(wildcard include/config/memory/isolation.h) \
+    $(wildcard include/config/memcg.h) \
+    $(wildcard include/config/compaction.h) \
+    $(wildcard include/config/memory/hotplug.h) \
+    $(wildcard include/config/have/memblock/node/map.h) \
+    $(wildcard include/config/flat/node/mem/map.h) \
+    $(wildcard include/config/no/bootmem.h) \
+    $(wildcard include/config/have/memory/present.h) \
+    $(wildcard include/config/have/memoryless/nodes.h) \
+    $(wildcard include/config/need/node/memmap/size.h) \
+    $(wildcard include/config/need/multiple/nodes.h) \
+    $(wildcard include/config/have/arch/early/pfn/to/nid.h) \
+    $(wildcard include/config/sparsemem/extreme.h) \
+    $(wildcard include/config/have/arch/pfn/valid.h) \
+    $(wildcard include/config/nodes/span/other/nodes.h) \
+    $(wildcard include/config/holes/in/zone.h) \
+    $(wildcard include/config/arch/has/holes/memorymodel.h) \
+  include/linux/nodemask.h \
+    $(wildcard include/config/movable/node.h) \
+  include/linux/pageblock-flags.h \
+    $(wildcard include/config/hugetlb/page/size/variable.h) \
+  include/linux/memory_hotplug.h \
+    $(wildcard include/config/memory/hotremove.h) \
+    $(wildcard include/config/have/arch/nodedata/extension.h) \
+    $(wildcard include/config/have/bootmem/info/node.h) \
   include/linux/topology.h \
     $(wildcard include/config/sched/smt.h) \
     $(wildcard include/config/sched/mc.h) \
@@ -452,7 +505,6 @@ deps_/home/tyxm/src/ubuntu_src/net_manager/net_manager.mod.o := \
     $(wildcard include/config/x86/ht.h) \
   include/asm-generic/topology.h \
   /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/asm/numa_32.h \
-  /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/asm/mmu.h \
   /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/asm/realmode.h \
     $(wildcard include/config/acpi/sleep.h) \
   /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/asm/io.h \
@@ -465,8 +517,6 @@ deps_/home/tyxm/src/ubuntu_src/net_manager/net_manager.mod.o := \
     $(wildcard include/config/no/generic/pci/ioport/map.h) \
     $(wildcard include/config/generic/pci/iomap.h) \
   include/linux/vmalloc.h \
-    $(wildcard include/config/mmu.h) \
-  include/linux/rbtree.h \
   include/xen/xen.h \
     $(wildcard include/config/xen/dom0.h) \
   include/xen/interface/xen.h \
@@ -489,61 +539,116 @@ deps_/home/tyxm/src/ubuntu_src/net_manager/net_manager.mod.o := \
   include/linux/pfn.h \
   include/linux/mmdebug.h \
     $(wildcard include/config/debug/vm.h) \
-  include/linux/sysctl.h \
-    $(wildcard include/config/sysctl.h) \
-  include/uapi/linux/sysctl.h \
-  include/linux/elf.h \
-  /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/asm/elf.h \
-  /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/asm/user.h \
-  /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/asm/user_32.h \
-  /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/uapi/asm/auxvec.h \
-  /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/asm/vdso.h \
-  /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/asm/desc.h \
-  /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/uapi/asm/ldt.h \
-  include/uapi/linux/elf.h \
-  /usr/src/linux-headers-3.11.0-12-generic/include/uapi/linux/elf-em.h \
+  include/linux/slub_def.h \
+    $(wildcard include/config/slub/stats.h) \
+    $(wildcard include/config/memcg/kmem.h) \
+    $(wildcard include/config/slub/debug.h) \
   include/linux/kobject.h \
   include/linux/sysfs.h \
   include/linux/kobject_ns.h \
+  include/linux/stat.h \
+  /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/uapi/asm/stat.h \
+  include/uapi/linux/stat.h \
+  include/linux/uidgid.h \
+    $(wildcard include/config/uidgid/strict/type/checks.h) \
+    $(wildcard include/config/user/ns.h) \
+  include/linux/highuid.h \
   include/linux/kref.h \
-  include/linux/moduleparam.h \
-    $(wildcard include/config/alpha.h) \
+  include/linux/kmemleak.h \
+    $(wildcard include/config/debug/kmemleak.h) \
+  include/net/checksum.h \
+  /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/asm/uaccess.h \
+    $(wildcard include/config/x86/intel/usercopy.h) \
+  /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/asm/smap.h \
+    $(wildcard include/config/x86/smap.h) \
+  /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/asm/uaccess_32.h \
+    $(wildcard include/config/debug/strict/user/copy/checks.h) \
+  /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/asm/checksum.h \
+  /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/asm/checksum_32.h \
+  include/linux/in6.h \
+  include/uapi/linux/in6.h \
+  include/linux/dmaengine.h \
+    $(wildcard include/config/async/tx/enable/channel/switch.h) \
+    $(wildcard include/config/rapidio/dma/engine.h) \
+    $(wildcard include/config/dma/engine.h) \
+    $(wildcard include/config/async/tx/dma.h) \
+  include/linux/device.h \
+    $(wildcard include/config/debug/devres.h) \
+    $(wildcard include/config/pinctrl.h) \
+    $(wildcard include/config/devtmpfs.h) \
+    $(wildcard include/config/sysfs/deprecated.h) \
+  include/linux/klist.h \
+  include/linux/pinctrl/devinfo.h \
+  include/linux/ratelimit.h \
+  /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/asm/device.h \
+    $(wildcard include/config/x86/dev/dma/ops.h) \
+    $(wildcard include/config/intel/iommu.h) \
+    $(wildcard include/config/amd/iommu.h) \
+  include/linux/pm_wakeup.h \
+  include/linux/scatterlist.h \
+    $(wildcard include/config/debug/sg.h) \
+  include/linux/mm.h \
+    $(wildcard include/config/sysctl.h) \
+    $(wildcard include/config/ppc.h) \
+    $(wildcard include/config/parisc.h) \
+    $(wildcard include/config/metag.h) \
     $(wildcard include/config/ia64.h) \
-    $(wildcard include/config/ppc64.h) \
-  include/linux/tracepoint.h \
-  include/linux/static_key.h \
-  include/linux/jump_label.h \
-    $(wildcard include/config/jump/label.h) \
-  /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/asm/jump_label.h \
-  /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/asm/module.h \
-    $(wildcard include/config/m586.h) \
-    $(wildcard include/config/m586tsc.h) \
-    $(wildcard include/config/m586mmx.h) \
-    $(wildcard include/config/mcore2.h) \
-    $(wildcard include/config/m686.h) \
-    $(wildcard include/config/mpentiumii.h) \
-    $(wildcard include/config/mpentiumiii.h) \
-    $(wildcard include/config/mpentiumm.h) \
-    $(wildcard include/config/mpentium4.h) \
-    $(wildcard include/config/mk6.h) \
-    $(wildcard include/config/mk8.h) \
-    $(wildcard include/config/melan.h) \
-    $(wildcard include/config/mcrusoe.h) \
-    $(wildcard include/config/mefficeon.h) \
-    $(wildcard include/config/mwinchipc6.h) \
-    $(wildcard include/config/mwinchip3d.h) \
-    $(wildcard include/config/mcyrixiii.h) \
-    $(wildcard include/config/mviac3/2.h) \
-    $(wildcard include/config/mviac7.h) \
-    $(wildcard include/config/mgeodegx1.h) \
-    $(wildcard include/config/mgeode/lx.h) \
-  include/asm-generic/module.h \
-    $(wildcard include/config/have/mod/arch/specific.h) \
-    $(wildcard include/config/modules/use/elf/rel.h) \
-    $(wildcard include/config/modules/use/elf/rela.h) \
-  include/linux/vermagic.h \
-  include/generated/utsrelease.h \
+    $(wildcard include/config/stack/growsup.h) \
+    $(wildcard include/config/ksm.h) \
+    $(wildcard include/config/debug/vm/rb.h) \
+    $(wildcard include/config/arch/uses/numa/prot/none.h) \
+    $(wildcard include/config/debug/pagealloc.h) \
+    $(wildcard include/config/hugetlbfs.h) \
+  include/linux/debug_locks.h \
+    $(wildcard include/config/debug/locking/api/selftests.h) \
+  include/linux/bit_spinlock.h \
+  include/linux/shrinker.h \
+  /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/asm/pgtable.h \
+  /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/asm/pgtable_32.h \
+    $(wildcard include/config/highpte.h) \
+  /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/asm/pgtable-3level.h \
+  include/asm-generic/pgtable.h \
+    $(wildcard include/config/have/arch/soft/dirty.h) \
+  include/linux/page-flags.h \
+    $(wildcard include/config/pageflags/extended.h) \
+    $(wildcard include/config/arch/uses/pg/uncached.h) \
+    $(wildcard include/config/memory/failure.h) \
+    $(wildcard include/config/swap.h) \
+  include/linux/huge_mm.h \
+  include/linux/vmstat.h \
+    $(wildcard include/config/vm/event/counters.h) \
+  include/linux/vm_event_item.h \
+    $(wildcard include/config/migration.h) \
+  /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/asm/scatterlist.h \
+  include/asm-generic/scatterlist.h \
+    $(wildcard include/config/need/sg/dma/length.h) \
+  include/linux/hrtimer.h \
+    $(wildcard include/config/high/res/timers.h) \
+    $(wildcard include/config/timerfd.h) \
+  include/linux/timerqueue.h \
+  include/linux/dma-mapping.h \
+    $(wildcard include/config/has/dma.h) \
+    $(wildcard include/config/arch/has/dma/set/coherent/mask.h) \
+    $(wildcard include/config/have/dma/attrs.h) \
+    $(wildcard include/config/need/dma/map/state.h) \
+  include/linux/dma-attrs.h \
+  include/linux/dma-direction.h \
+  /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/asm/dma-mapping.h \
+    $(wildcard include/config/isa.h) \
+    $(wildcard include/config/x86/dma/remap.h) \
+  include/linux/dma-debug.h \
+    $(wildcard include/config/dma/api/debug.h) \
+  /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/asm/swiotlb.h \
+    $(wildcard include/config/swiotlb.h) \
+  include/linux/swiotlb.h \
+  include/asm-generic/dma-coherent.h \
+    $(wildcard include/config/have/generic/dma/coherent.h) \
+  include/linux/dma-contiguous.h \
+    $(wildcard include/config/cma/areas.h) \
+  include/asm-generic/dma-mapping-common.h \
+  include/linux/netdev_features.h \
+  include/net/flow_keys.h \
 
-/home/tyxm/src/ubuntu_src/net_manager/net_manager.mod.o: $(deps_/home/tyxm/src/ubuntu_src/net_manager/net_manager.mod.o)
+/home/tyxm/src/ubuntu_src/net_manager/client.o: $(deps_/home/tyxm/src/ubuntu_src/net_manager/client.o)
 
-$(deps_/home/tyxm/src/ubuntu_src/net_manager/net_manager.mod.o):
+$(deps_/home/tyxm/src/ubuntu_src/net_manager/client.o):

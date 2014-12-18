@@ -1,0 +1,60 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.6	//
+CLIENT	net_manager.h	/^} CLIENT;$/;"	t	typeref:struct:__anon3
+CLIENT_LIST	net_manager.h	/^} CLIENT_LIST;$/;"	t	typeref:struct:client_list
+FUN_ERR	net_manager.h	8;"	d
+FUN_OK	net_manager.h	7;"	d
+FUN_ORTHER	net_manager.h	9;"	d
+IPADR	net_manager.h	/^} IPADR;$/;"	t	typeref:union:__anon1
+KERNELDIR	Makefile	/^KERNELDIR ?= \/lib\/modules\/$(shell uname -r)\/build$/;"	m
+MACADR	net_manager.h	/^} MACADR;$/;"	t	typeref:union:__anon2
+NIPQUAD	net_manager.h	10;"	d
+PWD	Makefile	/^PWD:=$(shell pwd)$/;"	m
+WLANDEVICE	net_manager.h	6;"	d
+__NET_MANAGER_H__	net_manager.h	2;"	d
+addClient	client.c	/^EXPORT_SYMBOL(addClient);$/;"	v
+addClient	client.c	/^int addClient(CLIENT_LIST *client, struct list_head *newClientList){$/;"	f
+char_ip	net_manager.h	/^    char char_ip[4];$/;"	m	union:__anon1
+checkNew	client.c	/^EXPORT_SYMBOL(checkNew);$/;"	v
+checkNew	client.c	/^int checkNew(CLIENT_LIST *client){$/;"	f
+client	net_manager.h	/^	CLIENT client;$/;"	m	struct:client_list
+client_exit	client.c	/^EXPORT_SYMBOL(client_exit);$/;"	v
+client_exit	client.c	/^void  client_exit(void){$/;"	f
+client_init	client.c	/^EXPORT_SYMBOL(client_init);$/;"	v
+client_init	client.c	/^void client_init(void){$/;"	f
+client_list	net_manager.h	/^typedef struct client_list{$/;"	s
+findNode	client.c	/^CLIENT_LIST * findNode(CLIENT_LIST *target){$/;"	f
+int_ip	net_manager.h	/^	int int_ip;$/;"	m	union:__anon1
+ip	net_manager.h	/^	IPADR ip;$/;"	m	struct:__anon3
+libNet-objs	Makefile	/^libNet-objs := net_manager.o client.o$/;"	m
+list	net_manager.h	/^	struct list_head list;$/;"	m	struct:client_list	typeref:struct:client_list::list_head
+mac	net_manager.h	/^	char mac[6];$/;"	m	struct:mac_char
+mac	net_manager.h	/^    MACADR mac;$/;"	m	struct:__anon3
+mac1	net_manager.h	/^	int mac1;$/;"	m	struct:mac_int
+mac2	net_manager.h	/^	short mac2;$/;"	m	struct:mac_int
+mac_char	net_manager.h	/^    struct mac_char mac_char;$/;"	m	union:__anon2	typeref:struct:__anon2::mac_char
+mac_char	net_manager.h	/^struct mac_char {$/;"	s
+mac_int	net_manager.h	/^	struct mac_int mac_int;$/;"	m	union:__anon2	typeref:struct:__anon2::mac_int
+mac_int	net_manager.h	/^struct mac_int {$/;"	s
+newClient	client.c	/^struct list_head *newClient = NULL;$/;"	v	typeref:struct:list_head
+newClient	net_manager.h	/^struct list_head *newClient;$/;"	v	typeref:struct:list_head
+obj-m	Makefile	/^obj-m := libNet.o$/;"	m
+port	net_manager.h	/^	int port;$/;"	m	struct:__anon3
+postRouting	net_manager.c	/^static unsigned int postRouting($/;"	f	file:
+postroute_ops	net_manager.c	/^struct nf_hook_ops  postroute_ops = {$/;"	v	typeref:struct:nf_hook_ops
+preRouting	net_manager.c	/^static unsigned int preRouting($/;"	f	file:
+preroute_ops	net_manager.c	/^struct nf_hook_ops preroute_ops = {$/;"	v	typeref:struct:nf_hook_ops
+rbmaster_exit	net_manager.c	/^module_exit(rbmaster_exit);$/;"	v
+rbmaster_exit	net_manager.c	/^void rbmaster_exit(void)$/;"	f
+rbmaster_init	net_manager.c	/^int rbmaster_init(void)$/;"	f
+rbmaster_init	net_manager.c	/^module_init(rbmaster_init);$/;"	v
+register_rbmaster_hook	net_manager.c	/^void register_rbmaster_hook(void)$/;"	f
+time	net_manager.c	/^int time(void) {$/;"	f
+time	net_manager.h	/^    time_t time;$/;"	m	struct:__anon3
+totalPackets	net_manager.c	/^int totalPackets = 0;$/;"	v
+unregister_rbmaster_hook	net_manager.c	/^void unregister_rbmaster_hook(void)$/;"	f
+updateDate	client.c	/^int updateDate(CLIENT_LIST  *linkData, CLIENT_LIST *newData){$/;"	f

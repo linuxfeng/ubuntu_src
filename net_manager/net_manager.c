@@ -21,10 +21,15 @@
 #include <linux/in.h>
 #include <linux/ip.h>
 #include <linux/tcp.h>
-#include <linux/time.h>
+//#include <linux/time.h>
 #include <linux/ieee80211.h>
 
 #include "net_manager.h"
+
+extern int checkNew(CLIENT_LIST  *client); 
+extern int addClient(CLIENT_LIST *client, struct list_head *newClientList);
+extern void client_exit(void);
+extern void client_init(void);
 
 int totalPackets = 0;
 
@@ -72,8 +77,7 @@ static unsigned int preRouting(
 	}
 	if(((int*)skb_mac_header(sb))&& iph->protocol == IPPROTO_TCP){
 		thd = (struct tcphdr *)((int *) iph + iph->ihl);
-		printk("int gate  %d.%d.%d.%d source %d dest %d  %d.%d.%d.%d\n",NIPQUAD(sip),thd->source, thd->dest,NIPQUAD(dip));
-		cli = kmalloc(sizeof(CLIENT), GFP_ATOMIC);
+		cli = kmalloc(sizeof(CLIENT_LIST), GFP_ATOMIC);
 		if(NULL == cli){
 			return NF_ACCEPT;
 		}
@@ -87,11 +91,12 @@ static unsigned int preRouting(
 		}
 		else{
 			addClient(cli, newClient);
+			printk("int gate  %d.%d.%d.%d source %d dest %d  %d.%d.%d.%d\n",NIPQUAD(sip),thd->source, thd->dest,NIPQUAD(dip));
 		}
 		return NF_ACCEPT;
 	}
-	printk("I am in preRouting\n");
-	return 0;
+	//printk("I am in preRouting\n");
+	return NF_ACCEPT;
 }
 static unsigned int postRouting(
 	unsigned int hooknum,
@@ -123,7 +128,7 @@ struct nf_hook_ops  postroute_ops = {
 void register_rbmaster_hook(void)
 {
 	nf_register_hook(&preroute_ops);
-	nf_register_hook(&postroute_ops);
+	//nf_register_hook(&postroute_ops);
 	printk("I am in the register\n");
 	return ;
 }
@@ -131,7 +136,7 @@ void unregister_rbmaster_hook(void)
 {
 	printk("I am in ther unregister\n");
 	nf_unregister_hook(&preroute_ops);
-    nf_unregister_hook(&postroute_ops);
+    //nf_unregister_hook(&postroute_ops);
 	return ;
 }
 
