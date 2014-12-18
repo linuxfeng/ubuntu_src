@@ -382,14 +382,19 @@ int ip_rcv(struct sk_buff *skb, struct net_device *dev, struct packet_type *pt, 
 
 	/* When the interface is in promisc. mode, drop all the crap
 	 * that it receives, do not try to analyse it.
+	 *  当数据帧的L2目的地址和接收接口的地址不同时，skb->pkt_type就被设成PACKET_OTHERHOST。
+	 *  网卡本身会丢弃这些包，除非设成混杂模式。嗅探器自会处理这种包，IP层无需理会。
 	 */
+
+     //pkt_type表示报文类型 。PACKET_OTHERHOST表示非去往本机但是在特定模式下被接受的报文
+	//此处的作用是根据包类型，来丢弃并非去往本地的包
 	if (skb->pkt_type == PACKET_OTHERHOST)
 		goto drop;
 
 
-	IP_UPD_PO_STATS_BH(dev_net(dev), IPSTATS_MIB_IN, skb->len);
+	IP_UPD_PO_STATS_BH(dev_net(dev), IPSTATS_MIB_IN, skb->len); //MIB收包计数统计
 
-	if ((skb = skb_share_check(skb, GFP_ATOMIC)) == NULL) {
+	if ((skb = skb_share_check(skb, GFP_ATOMIC)) == NULL) {//通过调用skb_shared()检查skb是否设置共享，如果引用计数不为1则认为设置了共享，skb_share_check函数中将返回一个clone过的skb指针，并将原skb引用计数减一
 		IP_INC_STATS_BH(dev_net(dev), IPSTATS_MIB_INDISCARDS);
 		goto out;
 	}
