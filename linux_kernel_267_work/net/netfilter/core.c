@@ -126,7 +126,7 @@ unsigned int nf_iterate(struct list_head *head,
 	 * The caller must not block between calls to this
 	 * function because of risk of continuing from deleted element.
 	 */
-	list_for_each_continue_rcu(*i, head) {
+	list_for_each_continue_rcu(*i, head) { /* 遍历所有注册的Hook*/
 		struct nf_hook_ops *elem = (struct nf_hook_ops *)*i;
 
 		if (hook_thresh > elem->priority)
@@ -134,7 +134,13 @@ unsigned int nf_iterate(struct list_head *head,
 
 		/* Optimization: we don't need to hold module
 		   reference here, since function can't sleep. --RR */
+		/* 调用Hook 的函数*/
 		verdict = elem->hook(hook, skb, indev, outdev, okfn);
+		/*
+		 * 很明显，如果是ACCEPT动作，那么还会继续调用下一个Hook，否则，当是REPEAT时，再返回前一个Hook，至于其它动作，则直接返回，不再断
+		 * 续调用下一个Hook，换句话讲，就是如果数据包已经被前一个Hook函数丢弃，当然不会再被交给下一个Hook函数。 
+		 *
+		 */
 		if (verdict != NF_ACCEPT) {
 #ifdef CONFIG_NETFILTER_DEBUG
 			if (unlikely((verdict & NF_VERDICT_MASK)
@@ -168,18 +174,19 @@ int nf_hook_slow(u_int8_t pf, unsigned int hook, struct sk_buff *skb,
 	/* We may already have this, but read-locks nest anyway */
 	rcu_read_lock();
 
+	/* 取得对应的链表首部*/ 
 	elem = &nf_hooks[pf][hook];
 next_hook:
 	verdict = nf_iterate(&nf_hooks[pf][hook], skb, hook, indev,
 			     outdev, &elem, okfn, hook_thresh);
 	if (verdict == NF_ACCEPT || verdict == NF_STOP) {
-		ret = 1;
+		ret = 1; /* 返回1，则表示装继续调用okfn函数指针*/
 	} else if (verdict == NF_DROP) {
-		kfree_skb(skb);
+		kfree_skb(skb);/* 删除数据包，需要释放skb*/ 
 		ret = -EPERM;
 	} else if ((verdict & NF_VERDICT_MASK) == NF_QUEUE) {
 		if (!nf_queue(skb, elem, pf, hook, indev, outdev, okfn,
-			      verdict >> NF_VERDICT_BITS))
+			      verdict >> NF_VERDICT_BITS))/*NF_QUEUE 对该数据报进行排队(通常用于将数据报给用户空间的进程进行处理)*/
 			goto next_hook;
 	}
 	rcu_read_unlock();

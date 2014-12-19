@@ -320,6 +320,7 @@ drop:
 	return -1;
 }
 
+/* 执行完钩子函数后，IP数据包被传送到ip_rcv_finish做进一步处理，这个函数主要功能是做路由选择 */
 static int ip_rcv_finish(struct sk_buff *skb)
 {
 	const struct iphdr *iph = ip_hdr(skb);
@@ -329,9 +330,10 @@ static int ip_rcv_finish(struct sk_buff *skb)
 	 *	Initialise the virtual path cache for the packet. It describes
 	 *	how the packet travels inside Linux networking.
 	 */
+	/* 刚开始没有进行路由表查询，所以还没有相应的路由表项：skb_dst(skb) == NULL */
 	if (skb_dst(skb) == NULL) {
 		int err = ip_route_input(skb, iph->daddr, iph->saddr, iph->tos,
-					 skb->dev);
+					 skb->dev);/* ip_route_input函数会根据路由表设置路由信息 */
 		if (unlikely(err)) {
 			if (err == -EHOSTUNREACH)
 				IP_INC_STATS_BH(dev_net(skb->dev),
@@ -343,6 +345,7 @@ static int ip_rcv_finish(struct sk_buff *skb)
 		}
 	}
 
+/*  更新流量控制所需要的统计数据，忽略  */
 #ifdef CONFIG_NET_CLS_ROUTE
 	if (unlikely(skb_dst(skb)->tclassid)) {
 		struct ip_rt_acct *st = per_cpu_ptr(ip_rt_acct, smp_processor_id());
@@ -353,10 +356,11 @@ static int ip_rcv_finish(struct sk_buff *skb)
 		st[(idx>>16)&0xFF].i_bytes += skb->len;
 	}
 #endif
-
+ /*  如果IP头部大于20字节，则表示IP头部包含IP选项 */
 	if (iph->ihl > 5 && ip_rcv_options(skb))
 		goto drop;
 
+	/*  skb->dst包含路由信息。根据路由类型更新SNMP统计数据  */
 	rt = skb_rtable(skb);
 	if (rt->rt_type == RTN_MULTICAST) {
 		IP_UPD_PO_STATS_BH(dev_net(rt->u.dst.dev), IPSTATS_MIB_INMCAST,
@@ -364,7 +368,9 @@ static int ip_rcv_finish(struct sk_buff *skb)
 	} else if (rt->rt_type == RTN_BROADCAST)
 		IP_UPD_PO_STATS_BH(dev_net(rt->u.dst.dev), IPSTATS_MIB_INBCAST,
 				skb->len);
-
+/*nput实际上会调用skb->dst->input(skb).input函数会根据路由信息设置为合适的
+ * 函数指针，如果是递交到本地的则为ip_local_deliver，若是转发则为ip_forward.
+ */
 	return dst_input(skb);
 
 drop:
@@ -398,10 +404,17 @@ int ip_rcv(struct sk_buff *skb, struct net_device *dev, struct packet_type *pt, 
 		IP_INC_STATS_BH(dev_net(dev), IPSTATS_MIB_INDISCARDS);
 		goto out;
 	}
-
+	/* 在取IP报头时要注意可能带有选项，因此报文长度应当以iph->ihl * 4为准。这里就需要尝试两次，第一次尝试sizeof(struct
+	 * iphdr)，只是为了确保skb还可以容纳标准的报头(即20字节)，然后可以ip_hdr(skb)得到报头；
+	 * 
+	 * pskb_may_pull确保skb->data指向的内存包含的数据至少为IP头部大小，由于每个
+	 * IP数据包包括IP分片必须包含一个完整的IP头部。如果小于IP头部大小，则缺失
+	 * 的部分将从数据分片中拷贝。这些分片保存在skb_shinfo(skb)->frags[]中。
+	 */
 	if (!pskb_may_pull(skb, sizeof(struct iphdr)))
 		goto inhdr_error;
 
+	/* 调用ip_hdr()的原因是pskb_may_pull()可能会调用__pskb_pull_tail()来改现现有的skb结构 */
 	iph = ip_hdr(skb);
 
 	/*
@@ -417,16 +430,22 @@ int ip_rcv(struct sk_buff *skb, struct net_device *dev, struct packet_type *pt, 
 
 	if (iph->ihl < 5 || iph->version != 4)
 		goto inhdr_error;
-
+	/* 第二次尝试ihl * 4，这才是报文的真正长度，然后重新调用ip_hdr(skb)来得到报头*/
 	if (!pskb_may_pull(skb, iph->ihl*4))
 		goto inhdr_error;
 
 	iph = ip_hdr(skb);
 
+	/*  验证IP头部的校验和  */
 	if (unlikely(ip_fast_csum((u8 *)iph, iph->ihl)))
 		goto inhdr_error;
 
+	 /*  IP头部中指示的IP数据包总长度  */
 	len = ntohs(iph->tot_len);
+	/*
+     *确保skb的数据长度大于等于IP头部中指示的IP数据包总长度及数据包总长度必须
+     *大于等于IP头部长度。
+     */
 	if (skb->len < len) {
 		IP_INC_STATS_BH(dev_net(dev), IPSTATS_MIB_INTRUNCATEDPKTS);
 		goto drop;
@@ -437,6 +456,8 @@ int ip_rcv(struct sk_buff *skb, struct net_device *dev, struct packet_type *pt, 
 	 * is IP we can trim to the true length of the frame.
 	 * Note this now means skb->len holds ntohs(iph->tot_len).
 	 */
+	/*获取到IP报头后经过一些检查，获取到报文的总长度len =
+	 * iph->tot_len，此时调用pskb_trim_rcsum()去除大于len的多余的字节*/
 	if (pskb_trim_rcsum(skb, len)) {
 		IP_INC_STATS_BH(dev_net(dev), IPSTATS_MIB_INDISCARDS);
 		goto drop;
@@ -447,9 +468,13 @@ int ip_rcv(struct sk_buff *skb, struct net_device *dev, struct packet_type *pt, 
 
 	/* Must drop socket now because of tproxy. */
 	skb_orphan(skb);
-
+	
+	/* ip_rcv()可以看成是查找路由前的IP层处理 ,
+	 * 接下来会调用插入的netfilter,NF_HOOK可以看做是Netfilter的切入点
+	 * 如果协议栈当前收到了一个IP报文(PF_INET)，那么就把这个报文传到Netfilter的NF_IP_PRE_ROUTING过滤点，去检查[R]在那个过滤点(nf_hooks[2][0])是否已		* 经有人注册了相关的用于处理数据包的钩子函数。如果有，则挨个去遍历链表nf_hooks[2][0]去寻找匹配的match和相应的target，根据返回到Netfilter框架中     * 的值来进一步决定该如何处理该数据包(由钩子模块处理还是交由ip_rcv_finish函数继续处理)。
+	 * */
 	return NF_HOOK(PF_INET, NF_INET_PRE_ROUTING, skb, dev, NULL,
-		       ip_rcv_finish);
+		       ip_rcv_finish);/* ip_rcv_finish()主要工作是完成路由表的查询，决定报文经过IP层处理后，是继续向上传递，还是进行转发，还是丢弃。 */
 
 inhdr_error:
 	IP_INC_STATS_BH(dev_net(dev), IPSTATS_MIB_INHDRERRORS);

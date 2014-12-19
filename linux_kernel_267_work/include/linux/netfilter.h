@@ -204,10 +204,11 @@ static inline int nf_hook(u_int8_t pf, unsigned int hook, struct sk_buff *skb,
 
 /* HX: It's slightly less gross now. */
 
+/* 我们发现NF_HOOK_THRESH宏只增加了一个thresh参数，这个参数就是用来指定通过该宏去遍历钩子函数时的优先级 */
 #define NF_HOOK_THRESH(pf, hook, skb, indev, outdev, okfn, thresh)	       \
 ({int __ret;								       \
 if ((__ret=nf_hook_thresh(pf, hook, (skb), indev, outdev, okfn, thresh, 1)) == 1)\
-	__ret = (okfn)(skb);						       \
+	__ret = (okfn)(skb);/* 返回１的时候继续调用okfn函数，也就是可能对应ip_rcv()函数中的ip_rcv_finish*/						       \
 __ret;})
 
 #define NF_HOOK_COND(pf, hook, skb, indev, outdev, okfn, cond)		       \
