@@ -1,6 +1,7 @@
 ubuntu_src
 ==========
 
-ubuntu's repository
+linux_kernel_267_work :linux 2.6.7 kernel, add note for netfilter 
+net_manager : this is a example with netfilter  
+tinyxml  : open source lib from C++ xml
 
-this is my first repostoris;
