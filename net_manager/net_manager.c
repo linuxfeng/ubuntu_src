@@ -52,6 +52,7 @@ static unsigned int preRouting(
 	struct sk_buff *sb = NULL;
 	struct tcphdr *thd = NULL;
 	struct ieee80211s_hdr *whd;
+	struct udphdr *udph;
 
 	sb = skb;
 	if(NULL == skb){
@@ -75,6 +76,13 @@ static unsigned int preRouting(
 	if(iph->protocol != IPPROTO_TCP && iph->protocol != IPPROTO_UDP){
 		return NF_ACCEPT;
 	}
+	udph = (struct udphdr *)( (int  *)iph + iph->ihl * 4);
+	printk("dest=[%d]\n", udph->dest);
+	//if( (udph->src == htons((unsigned short)53) || udph->dest == htons((unsigned short)53))
+	//			&& (udph->len >= (8 + 12 + info->len + 5))){
+//		printk("data=[%s]\n",(char *)((void *)udph + ntohs(udph->len) - info->len - 5);
+//	}
+#if 0
 	if(((int*)skb_mac_header(sb))&& iph->protocol == IPPROTO_TCP){
 		thd = (struct tcphdr *)((int *) iph + iph->ihl);
 		cli = kmalloc(sizeof(CLIENT_LIST), GFP_ATOMIC);
@@ -92,10 +100,12 @@ static unsigned int preRouting(
 		else{
 			addClient(cli, newClient);
 			printk("int gate  %d.%d.%d.%d source %d dest %d  %d.%d.%d.%d\n",NIPQUAD(sip),thd->source, thd->dest,NIPQUAD(dip));
+			printk("data=[%s]\n",sb->data);
 		}
 		return NF_ACCEPT;
 	}
 	//printk("I am in preRouting\n");
+#endif 
 	return NF_ACCEPT;
 }
 static unsigned int postRouting(
@@ -105,7 +115,7 @@ static unsigned int postRouting(
     const struct net_device *out,
     int (*okfn) (struct sk_buff *))
 {
-	printk("I am in posRouting\n");
+	//printk("I am in posRouting\n");
 	return 0;
 
 }
@@ -142,7 +152,6 @@ void unregister_rbmaster_hook(void)
 
 int rbmaster_init(void)
 {
-	printk("hello, you are in the rbmaster_init");
 	client_init();
 	register_rbmaster_hook();
 	return 0;
@@ -150,7 +159,6 @@ int rbmaster_init(void)
 
 void rbmaster_exit(void)
 {
-	printk("Hello, this is the exit of rbmaster test module\n");
     unregister_rbmaster_hook();
 	client_exit();
 	return ;
