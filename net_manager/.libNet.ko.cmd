@@ -1,0 +1,1 @@
+cmd_/home/tyxm/src/ubuntu_src/net_manager/libNet.ko := ld -r -m elf_i386 -T /usr/src/linux-headers-3.11.0-12-generic/scripts/module-common.lds --build-id  -o /home/tyxm/src/ubuntu_src/net_manager/libNet.ko /home/tyxm/src/ubuntu_src/net_manager/libNet.o /home/tyxm/src/ubuntu_src/net_manager/libNet.mod.o

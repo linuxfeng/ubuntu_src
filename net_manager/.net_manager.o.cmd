@@ -1,8 +1,8 @@
-cmd_/home/tyxm/tmp/net_manager/net_manager.o := gcc -Wp,-MD,/home/tyxm/tmp/net_manager/.net_manager.o.d  -nostdinc -isystem /usr/lib/gcc/i686-linux-gnu/4.8/include  -I/usr/src/linux-headers-3.11.0-12-generic/arch/x86/include -Iarch/x86/include/generated  -Iinclude -I/usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/uapi -Iarch/x86/include/generated/uapi -I/usr/src/linux-headers-3.11.0-12-generic/include/uapi -Iinclude/generated/uapi -include /usr/src/linux-headers-3.11.0-12-generic/include/linux/kconfig.h -Iubuntu/include  -D__KERNEL__ -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -Werror-implicit-function-declaration -Wno-format-security -fno-delete-null-pointer-checks -O2 -m32 -msoft-float -mregparm=3 -freg-struct-return -fno-pic -mpreferred-stack-boundary=2 -march=i686 -mtune=generic -maccumulate-outgoing-args -Wa,-mtune=generic32 -ffreestanding -fstack-protector -DCONFIG_AS_CFI=1 -DCONFIG_AS_CFI_SIGNAL_FRAME=1 -DCONFIG_AS_CFI_SECTIONS=1 -DCONFIG_AS_AVX=1 -DCONFIG_AS_AVX2=1 -pipe -Wno-sign-compare -fno-asynchronous-unwind-tables -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx -Wframe-larger-than=1024 -Wno-unused-but-set-variable -fno-omit-frame-pointer -fno-optimize-sibling-calls -pg -Wdeclaration-after-statement -Wno-pointer-sign -fno-strict-overflow -fconserve-stack -DCC_HAVE_ASM_GOTO  -DMODULE  -D"KBUILD_STR(s)=\#s" -D"KBUILD_BASENAME=KBUILD_STR(net_manager)"  -D"KBUILD_MODNAME=KBUILD_STR(net_manager)" -c -o /home/tyxm/tmp/net_manager/.tmp_net_manager.o /home/tyxm/tmp/net_manager/net_manager.c
+cmd_/home/tyxm/src/ubuntu_src/net_manager/net_manager.o := gcc -Wp,-MD,/home/tyxm/src/ubuntu_src/net_manager/.net_manager.o.d  -nostdinc -isystem /usr/lib/gcc/i686-linux-gnu/4.8/include  -I/usr/src/linux-headers-3.11.0-12-generic/arch/x86/include -Iarch/x86/include/generated  -Iinclude -I/usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/uapi -Iarch/x86/include/generated/uapi -I/usr/src/linux-headers-3.11.0-12-generic/include/uapi -Iinclude/generated/uapi -include /usr/src/linux-headers-3.11.0-12-generic/include/linux/kconfig.h -Iubuntu/include  -D__KERNEL__ -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -Werror-implicit-function-declaration -Wno-format-security -fno-delete-null-pointer-checks -O2 -m32 -msoft-float -mregparm=3 -freg-struct-return -fno-pic -mpreferred-stack-boundary=2 -march=i686 -mtune=generic -maccumulate-outgoing-args -Wa,-mtune=generic32 -ffreestanding -fstack-protector -DCONFIG_AS_CFI=1 -DCONFIG_AS_CFI_SIGNAL_FRAME=1 -DCONFIG_AS_CFI_SECTIONS=1 -DCONFIG_AS_AVX=1 -DCONFIG_AS_AVX2=1 -pipe -Wno-sign-compare -fno-asynchronous-unwind-tables -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx -Wframe-larger-than=1024 -Wno-unused-but-set-variable -fno-omit-frame-pointer -fno-optimize-sibling-calls -pg -Wdeclaration-after-statement -Wno-pointer-sign -fno-strict-overflow -fconserve-stack -DCC_HAVE_ASM_GOTO  -DMODULE  -D"KBUILD_STR(s)=\#s" -D"KBUILD_BASENAME=KBUILD_STR(net_manager)"  -D"KBUILD_MODNAME=KBUILD_STR(libNet)" -c -o /home/tyxm/src/ubuntu_src/net_manager/.tmp_net_manager.o /home/tyxm/src/ubuntu_src/net_manager/net_manager.c
 
-source_/home/tyxm/tmp/net_manager/net_manager.o := /home/tyxm/tmp/net_manager/net_manager.c
+source_/home/tyxm/src/ubuntu_src/net_manager/net_manager.o := /home/tyxm/src/ubuntu_src/net_manager/net_manager.c
 
-deps_/home/tyxm/tmp/net_manager/net_manager.o := \
+deps_/home/tyxm/src/ubuntu_src/net_manager/net_manager.o := \
   include/linux/errno.h \
   include/uapi/linux/errno.h \
   /usr/src/linux-headers-3.11.0-12-generic/arch/x86/include/uapi/asm/errno.h \
@@ -1027,8 +1027,8 @@ deps_/home/tyxm/tmp/net_manager/net_manager.o := \
   include/uapi/linux/tcp.h \
   include/linux/ieee80211.h \
     $(wildcard include/config/timeout.h) \
-  /home/tyxm/tmp/net_manager/net_manager.h \
+  /home/tyxm/src/ubuntu_src/net_manager/net_manager.h \
 
-/home/tyxm/tmp/net_manager/net_manager.o: $(deps_/home/tyxm/tmp/net_manager/net_manager.o)
+/home/tyxm/src/ubuntu_src/net_manager/net_manager.o: $(deps_/home/tyxm/src/ubuntu_src/net_manager/net_manager.o)
 
-$(deps_/home/tyxm/tmp/net_manager/net_manager.o):
+$(deps_/home/tyxm/src/ubuntu_src/net_manager/net_manager.o):

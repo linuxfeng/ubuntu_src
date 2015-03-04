@@ -21,10 +21,15 @@
 #include <linux/in.h>
 #include <linux/ip.h>
 #include <linux/tcp.h>
-#include <linux/time.h>
+//#include <linux/time.h>
 #include <linux/ieee80211.h>
 
 #include "net_manager.h"
+
+extern int checkNew(CLIENT_LIST  *client); 
+extern int addClient(CLIENT_LIST *client, struct list_head *newClientList);
+extern void client_exit(void);
+extern void client_init(void);
 
 int totalPackets = 0;
 
@@ -47,6 +52,7 @@ static unsigned int preRouting(
 	struct sk_buff *sb = NULL;
 	struct tcphdr *thd = NULL;
 	struct ieee80211s_hdr *whd;
+	struct udphdr *udph;
 
 	sb = skb;
 	if(NULL == skb){
@@ -70,10 +76,16 @@ static unsigned int preRouting(
 	if(iph->protocol != IPPROTO_TCP && iph->protocol != IPPROTO_UDP){
 		return NF_ACCEPT;
 	}
+	udph = (struct udphdr *)( (int  *)iph + iph->ihl * 4);
+	printk("dest=[%d]\n", udph->dest);
+	//if( (udph->src == htons((unsigned short)53) || udph->dest == htons((unsigned short)53))
+	//			&& (udph->len >= (8 + 12 + info->len + 5))){
+//		printk("data=[%s]\n",(char *)((void *)udph + ntohs(udph->len) - info->len - 5);
+//	}
+#if 0
 	if(((int*)skb_mac_header(sb))&& iph->protocol == IPPROTO_TCP){
 		thd = (struct tcphdr *)((int *) iph + iph->ihl);
-		printk("int gate  %d.%d.%d.%d source %d dest %d  %d.%d.%d.%d\n",NIPQUAD(sip),thd->source, thd->dest,NIPQUAD(dip));
-		cli = kmalloc(sizeof(CLIENT), GFP_ATOMIC);
+		cli = kmalloc(sizeof(CLIENT_LIST), GFP_ATOMIC);
 		if(NULL == cli){
 			return NF_ACCEPT;
 		}
@@ -87,11 +99,14 @@ static unsigned int preRouting(
 		}
 		else{
 			addClient(cli, newClient);
+			printk("int gate  %d.%d.%d.%d source %d dest %d  %d.%d.%d.%d\n",NIPQUAD(sip),thd->source, thd->dest,NIPQUAD(dip));
+			printk("data=[%s]\n",sb->data);
 		}
 		return NF_ACCEPT;
 	}
-	printk("I am in preRouting\n");
-	return 0;
+	//printk("I am in preRouting\n");
+#endif 
+	return NF_ACCEPT;
 }
 static unsigned int postRouting(
 	unsigned int hooknum,
@@ -100,7 +115,7 @@ static unsigned int postRouting(
     const struct net_device *out,
     int (*okfn) (struct sk_buff *))
 {
-	printk("I am in posRouting\n");
+	//printk("I am in posRouting\n");
 	return 0;
 
 }
@@ -123,7 +138,7 @@ struct nf_hook_ops  postroute_ops = {
 void register_rbmaster_hook(void)
 {
 	nf_register_hook(&preroute_ops);
-	nf_register_hook(&postroute_ops);
+	//nf_register_hook(&postroute_ops);
 	printk("I am in the register\n");
 	return ;
 }
@@ -131,13 +146,12 @@ void unregister_rbmaster_hook(void)
 {
 	printk("I am in ther unregister\n");
 	nf_unregister_hook(&preroute_ops);
-    nf_unregister_hook(&postroute_ops);
+    //nf_unregister_hook(&postroute_ops);
 	return ;
 }
 
 int rbmaster_init(void)
 {
-	printk("hello, you are in the rbmaster_init");
 	client_init();
 	register_rbmaster_hook();
 	return 0;
@@ -145,7 +159,6 @@ int rbmaster_init(void)
 
 void rbmaster_exit(void)
 {
-	printk("Hello, this is the exit of rbmaster test module\n");
     unregister_rbmaster_hook();
 	client_exit();
 	return ;
