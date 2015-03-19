@@ -1,4 +1,4 @@
-##测试的环境参考文档
+##测试的环境及参考文档
 * ubuntu 14.04
 * gcc (Ubuntu 4.8.2-19ubuntu1) 4.8.2
 * [Linux系统中“动态库”和“静态库”那点事儿 ](http://blog.chinaunix.net/uid-23069658-id-3142046.html)
