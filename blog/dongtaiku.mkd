@@ -1,19 +1,91 @@
-测试的环境
-------
+##测试的环境
 * ubuntu 14.04
 * gcc (Ubuntu 4.8.2-19ubuntu1) 4.8.2
 
-动态库相关介绍
-------
+##动态库相关介绍
 
 * 共享文件（*.so）:也称为动态库文件，它包含了代码和数据（这些数据是在连接时候被连接器ld和运行时动态连接器使用的）。动态连接器可能称为ld.so.1，libc.so.1或者 ld-linux.so.1。
 * 动态库：这类库的名字一般是libxxx.M.N.so，同样的xxx为库的名字，M是库的主版本号，N是库的副版本号。当然也可以不要版本号，但名字必须有。相对于静态函数库，动态函数库在编译的时候并没有被编译进目标代码中，你的程序执行到相关函数时才调用该函数库里的相应函数，因此动态函数库所产生的可执行文件比较小。由于函数库没有被整合进你的程序，而是程序运行时动态的申请并调用，所以程序的运行环境中必须提供相应的库。动态函数库的改变并不影响你的程序，所以动态函数库的升级比较方便。linux系统有几个重要的目录存放相应的函数库，如/lib /usr/lib。
 * 当要使用静态的程序库时，连接器会找出程序所需的函数，然后将它们拷贝到执行文件，由于这种拷贝是完整的，所以一旦连接成功，静态程序库也就不再需要了。然而，对动态库而言，就不是这样。动态库会在执行程序内留下一个标记指明当程序执行时，首先必须载入这个库。由于动态库节省空间，linux下进行连接的缺省操作是首先连接动态库，也就是说，如果同时存在静态和动态库，不特别指定的话，将与动态库相连接
-* 有时候当我们的应用程序无法运行时，它会提示我们说它找不到什么样的库，或者哪个库的版本又不合它胃口了等等之类的话。那么应用程序它是怎么知道需要哪些库的呢？我们可以使用工具ldd来分析一个文件依赖了那些so文件，比如：ldd libfunab.so，它的输出如下：
-    linux-vdso.so.1 =>  (0x00007fff34ddc000)
-    libc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007fd9620a5000)
-    /lib64/ld-linux-x86-64.so.2 (0x00007fd96268d000)
+* 有时候当我们的应用程序无法运行时，它会提示我们说它找不到什么样的库，或者哪个库的版本又不合它胃口了等等之类的话。那么应用程序它是怎么知道需要哪些库的呢？我们可以使用工具ldd来分析一个文件依赖了那些so文件，比如：ldd libfunab.so：
 
+它有如下的输出：
+
+        linux-vdso.so.1 =>  (0x00007fff34ddc000)
+        libc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007fd9620a5000)
+        /lib64/ld-linux-x86-64.so.2 (0x00007fd96268d000)
+        
+##linux的动态链接库
+ Linux系统中动态链接库的配置文件一般在/etc/ld.so.conf文件内，它里面存放的内容是可以被Linux共享的动态联库所在的目录的名字。我的系统中，该文件的内容如下：
  
+    tyxm@Aspire:~/tmp$ cat /etc/ld.so.conf
+    include /etc/ld.so.conf.d/*.conf
+在ld.so.conf.d目录下有很多*.conf文件，每个conf文件代表了一种应用的库配置内容，ls如下：
 
+    tyxm@Aspire:/etc/ld.so.conf.d$ ls
+    fakeroot-x86_64-linux-gnu.conf  i686-linux-gnu.conf  x86_64-linux-gnu.conf      x86_64-linux-gnu_GL.conf
+    i386-linux-gnu_GL.conf          libc.conf            x86_64-linux-gnu_EGL.conf  zz_i386-biarch-compat.conf
+    tyxm@Aspire:/etc/ld.so.conf.d$
+etc目录下还存在一个名叫ld.so.cache的文件，这个文件的作用如下说明：为了使得动态链接库可以被系统使用，当我们修改了/etc/ld.so.conf或/etc/ld.so.conf.d/目录下的任何文件，或者往那些目录下拷贝了新的动态链接库文件时，都需要运行一个很重要的命令：ldconfig，该命令位于/sbin目录下，主要的用途就是负责搜索/lib和/usr/lib，以及配置文件/etc/ld.so.conf里所列的目录下搜索可用的动态链接库文件，然后创建处动态加载程序/lib/ld-linux.so.2所需要的连接和(默认)缓存文件/etc/ld.so.cache(此文件里保存着已经排好序的动态链接库名字列表)。也就是说：当用户在某个目录下面创建或拷贝了一个动态链接库，若想使其被系统共享，可以执行一下"ldconfig目录名"这个命令。此命令的功能在于让ldconfig将指定目录下的动态链接库被系统共享起来，即：在缓存文件/etc/ld.so.cache中追加进指定目录下的共享库。**请注意：如果此目录不在/lib,/usr/lib及/etc/ld.so.conf文件所列的目录里面，则再次单独运行ldconfig时，此目录下的动态链接库可能不被系统共享了。单独运行ldconfig时，它只会搜索/lib、/usr/lib以及在/etc/ld.so.conf文件里所列的目录，用它们来重建/etc/ld.so.cache。**我们自己开发的共享库就可以将其拷贝到/lib、/etc/lib目录里，又或者修改/etc/ld.so.conf文件将我们自己的库路径添加到该文件中，再执行ldconfig命令。
+##例子
+在ubuntu上实现三个文件：ab.h ,  funA.c,  funB.c ,把funA.c 和funB.c 生成一个动态的共享库，同时，用mian.c去调用共享库里面的函数，下面是文件的内容：
 
+    tyxm@Aspire:~/tmp/so_a$ ls
+    ab.h  funA.c  funB.c  main.c
+    tyxm@Aspire:~/tmp/so_a$ cat main.c 
+    #include <stdio.h>
+    #include <stdlib.h>
+    #include "ab.h"
+    
+    int main(){
+    
+    	int a = 10;
+    	int b = 13;
+    	funA(a);
+    	funB(b);
+    	return 0;
+    }
+    tyxm@Aspire:~/tmp/so_a$ cat funA.c 
+    #include <stdlib.h>
+    #include <stdio.h>
+    
+    int funA(int a){
+    	printf("a = [%d]\n", a);
+    	return 0;
+    }
+    tyxm@Aspire:~/tmp/so_a$ cat funB.c 
+    #include <stdio.h>
+    #include <stdlib.h>
+    
+    int funB(int b){
+    	printf("b = [%d]\n", b);
+    	return 0;
+    }
+    tyxm@Aspire:~/tmp/so_a$ cat ab.h 
+    #ifndef AB_H_
+    #define AB_H_
+    
+    extern int funA(int a);
+    extern int funB(int b);
+    
+    #endif
+
+###生成动态库的方法一
+先生成目标.o文件：gcc -c -fPIC funA.c  funB.c
+
+再生成.so文件：gcc -shared -o libfunab.so funA.o funB.o
+###生成动态库的方法二
+一次性生成.so文件：gcc -o libfunab.so -shared -fPIC  funA.c funB.c
+###对使用参数的解释
+-shared该选项指定生成动态连接库（让连接器生成T类型的导出符号表，有时候也生成弱连接W类型的导出符号），不用该标志外部程序无法连接。相当于一个可执行文件。
+
+-fPIC：表示编译为位置独立的代码，不用此选项的话编译后的代码是位置相关的所以动态载入时是通过代码拷贝的方式来满足不同进程的需要，而不能达到真正代码段共享的目的。
+###使用动态链接库
+###用法一：动态链接
+编译上述程序的时候，编译需要知道引用.h的位置，也需要知道引用的库的位置
+
+* 对于#include "..."，编译器会在当前路径搜索.h文件。你也可以使用-I选项提供额外的搜索路径，比如-I /home/tmp/tmp。
+* 对于#include <...>，编译器会在默认include搜索路径中寻找。使用如下命令获知自己电脑上的include默认搜索路径:$`gcc -print-prog-name=cc1` -v  
+* 使用-l选项说明库文件的名字。这里，我们将使用-lfunab (即libfunab库文件)。
+* 使用-L选项说明库文件所在的路径。这里，我们使用-L. (即.路径)。
+###
