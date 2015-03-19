@@ -1,6 +1,8 @@
-##测试的环境
+##测试的环境参考文档
 * ubuntu 14.04
 * gcc (Ubuntu 4.8.2-19ubuntu1) 4.8.2
+* [Linux系统中“动态库”和“静态库”那点事儿 ](http://blog.chinaunix.net/uid-23069658-id-3142046.html)
+* [C编译: 动态连接库 (.so文件)](http://www.cnblogs.com/vamei/archive/2013/04/04/2998850.html)
 
 ##动态库相关介绍
 
@@ -28,10 +30,10 @@
     tyxm@Aspire:/etc/ld.so.conf.d$
 etc目录下还存在一个名叫ld.so.cache的文件，这个文件的作用如下说明：为了使得动态链接库可以被系统使用，当我们修改了/etc/ld.so.conf或/etc/ld.so.conf.d/目录下的任何文件，或者往那些目录下拷贝了新的动态链接库文件时，都需要运行一个很重要的命令：ldconfig，该命令位于/sbin目录下，主要的用途就是负责搜索/lib和/usr/lib，以及配置文件/etc/ld.so.conf里所列的目录下搜索可用的动态链接库文件，然后创建处动态加载程序/lib/ld-linux.so.2所需要的连接和(默认)缓存文件/etc/ld.so.cache(此文件里保存着已经排好序的动态链接库名字列表)。也就是说：当用户在某个目录下面创建或拷贝了一个动态链接库，若想使其被系统共享，可以执行一下"ldconfig目录名"这个命令。此命令的功能在于让ldconfig将指定目录下的动态链接库被系统共享起来，即：在缓存文件/etc/ld.so.cache中追加进指定目录下的共享库。**请注意：如果此目录不在/lib,/usr/lib及/etc/ld.so.conf文件所列的目录里面，则再次单独运行ldconfig时，此目录下的动态链接库可能不被系统共享了。单独运行ldconfig时，它只会搜索/lib、/usr/lib以及在/etc/ld.so.conf文件里所列的目录，用它们来重建/etc/ld.so.cache。**我们自己开发的共享库就可以将其拷贝到/lib、/etc/lib目录里，又或者修改/etc/ld.so.conf文件将我们自己的库路径添加到该文件中，再执行ldconfig命令。
 ##例子
-在ubuntu上实现三个文件：ab.h ,  funA.c,  funB.c ,把funA.c 和funB.c 生成一个动态的共享库，同时，用mian.c去调用共享库里面的函数，下面是文件的内容：
+在ubuntu上实现三个文件：ab.h ,  funA.c,  funB.c ,把funA.c 和funB.c 生成一个动态的共享库，同时，用mian.c去做动态链接的测试，用main_load.c去做动态加载的测试，下面是文件的内容：
 
     tyxm@Aspire:~/tmp/so_a$ ls
-    ab.h  funA.c  funB.c  main.c
+    ab.h  funA.c  funB.c  main.c  main_load.c
     tyxm@Aspire:~/tmp/so_a$ cat main.c 
     #include <stdio.h>
     #include <stdlib.h>
@@ -43,6 +45,28 @@ etc目录下还存在一个名叫ld.so.cache的文件，这个文件的作用如
     	int b = 13;
     	funA(a);
     	funB(b);
+    	return 0;
+    }
+    tyxm@Aspire:~/tmp/so_a$ cat main_load.c 
+    #include <stdio.h>
+    #include <stdlib.h>
+    #include <dlfcn.h>
+    #include "ab.h"
+
+    int (*fn)(int);
+    int main(){
+    	int a = 10;
+    	int b = 13;
+    	void *handle=dlopen("./libfunab.so", RTLD_LAZY);
+    	const char *err = dlerror();
+    	if(NULL != err){
+    		perror("can not open shared object");
+    	}
+    	fn=dlsym(handle, "funA");
+    	fn(a);
+    	fn=dlsym(handle, "funB");
+    	fn(b);
+    	dlclose(handle);
     	return 0;
     }
     tyxm@Aspire:~/tmp/so_a$ cat funA.c 
@@ -70,22 +94,51 @@ etc目录下还存在一个名叫ld.so.cache的文件，这个文件的作用如
     
     #endif
 
-###生成动态库的方法一
+####生成动态库的方法一
 先生成目标.o文件：gcc -c -fPIC funA.c  funB.c
 
 再生成.so文件：gcc -shared -o libfunab.so funA.o funB.o
-###生成动态库的方法二
+####生成动态库的方法二
 一次性生成.so文件：gcc -o libfunab.so -shared -fPIC  funA.c funB.c
-###对使用参数的解释
+####对使用参数的解释
 -shared该选项指定生成动态连接库（让连接器生成T类型的导出符号表，有时候也生成弱连接W类型的导出符号），不用该标志外部程序无法连接。相当于一个可执行文件。
 
 -fPIC：表示编译为位置独立的代码，不用此选项的话编译后的代码是位置相关的所以动态载入时是通过代码拷贝的方式来满足不同进程的需要，而不能达到真正代码段共享的目的。
-###使用动态链接库
-###用法一：动态链接
+##使用动态链接库
+####用法一：动态链接
 编译上述程序的时候，编译需要知道引用.h的位置，也需要知道引用的库的位置
 
 * 对于#include "..."，编译器会在当前路径搜索.h文件。你也可以使用-I选项提供额外的搜索路径，比如-I /home/tmp/tmp。
 * 对于#include <...>，编译器会在默认include搜索路径中寻找。使用如下命令获知自己电脑上的include默认搜索路径:$`gcc -print-prog-name=cc1` -v  
 * 使用-l选项说明库文件的名字。这里，我们将使用-lfunab (即libfunab库文件)。
 * 使用-L选项说明库文件所在的路径。这里，我们使用-L. (即.路径)。
-###
+* 可执行文件运行时，找不到动态库的解决办法：libmystack.so位于当前路径，位于库文件的默认路径之外。尽管我们在编译时(compile time)提供了.so文件的位置，但这个信息并没有写入test可执行文件(runtime)。可以使用下面命令测试:ldd main，可能会显示  libfunab.so => not found，这说明生成的可执行文件找不到链接库：
+    1. 将.so文件放入默认搜索路径
+    2. 设置LD_LIBRARY_PATH环境变量
+    3. ldconfig `pwd`(待于验证)倘若我是开发一款软件，或者给自己的系统DIY一个非常有用的功能模块，那么我更倾向于将libtest.so拷贝到/lib、/usr/lib目录下，或者我还有可能在/usr/local/lib/目录下新建一文件夹xxx，将so库拷贝到那儿去，并在/etc/ld.so.conf.d/目录下新建一文件mytest.conf，内容只有一行“/usr/local/lib/xxx/libtest.so”，再执行ldconfig。
+    4. 提供-rpath选项，将搜索路径信息写入main文件(rpath代表runtime path)。这样就不需要设置环境变量。这样做的坏处是，如果库文件移动位置，我们需要重新编译main。使用如下命令编译`main.c:gcc -o main main.c -lfunab -L. -Wl,-rpath=. `          -Wl表示，-rpath选项是传递给连接器(linker)。
+####用法二：动态加载
+动态加载是非常灵活的，它依赖于一套Linux提供的标准API来完成。在源程序里，你可以很自如的运用API来加载、使用、释放so库资源。以下函数在代码中使用需要包含头文件：dlfcn.h
+
+    const char *dlerror(void)   \\当动态链接库操作函数执行失败时，dlerror可以返回出错信息，返回值为NULL时表示操作函数执行成功。
+    void *dlopen(const char *filename, int flag)  \\用于打开指定名字（filename）的动态链接库，并返回操作句柄。调用失败时，将返回NULL值，否则返回的是操作句柄。
+    void *dlsym(void *handle, char *symbol)  \\根据动态链接库操作句柄（handle）与符号（symbol），返回符号对应的函数的执行代码地址。由此地址，可以带参数执行相应的函数。
+    int dlclose (void *handle) \\ 用于关闭指定句柄的动态链接库，只有当此动态链接库的使用计数为0时，才会真正被系统卸载。2.2在程序中使用动态链接库函数。
+说明：filename:如果名字不以“/”开头，则非绝对路径名，将按下列先后顺序查找该文件。
+
+* 用户环境变量中的LD_LIBRARY值；
+* 动态链接缓冲文件/etc/ld.so.cache
+* 目录/lib,/usr/lib
+
+flag表示在什么时候解决未定义的符号（调用）。取值有两个：
+
+*  RTLD_LAZY : 表明在动态链接库的函数代码执行时解决。
+* RTLD_NOW :表明在dlopen返回前就解决所有未定义的符号，一旦未解决，dlopen将返回错误。
+
+dlsym()的用法一般如下：
+
+* void（*add）（int x,int y）； //说明一下要调用的动态函数add 
+* add=dlsym（"xxx.so","add"）； // 打开xxx.so共享库，取add函数地址
+* add（89,369）； // 带两个参数89和369调用add函数 
+
+动态加载共享库：gcc -o main main_load.c -rdynamic -ldl
