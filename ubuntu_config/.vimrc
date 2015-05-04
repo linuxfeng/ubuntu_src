@@ -25,9 +25,11 @@ Bundle 'majutsushi/tagbar'
 Bundle 'dyng/ctrlsf.vim'
 Bundle 'scrooloose/nerdcommenter'
 Bundle 'SirVer/ultisnips'
-"Bundle 'Valloric/YouCompleteMe'
+Bundle 'Valloric/YouCompleteMe'
 Bundle 'scrooloose/nerdtree'
 Bundle 'fholgado/minibufexpl.vim'
+Bundle 'gcmt/wildfire.vim'
+Bundle 'scrooloose/syntastic'
   
 " c) 指定非Github的Git仓库的插件，需要使用git地址  
 "Bundle 'git://git.wincent.com/command-t.git'  
@@ -101,7 +103,8 @@ execute pathogen#infect()
 
 " 配色方案
 set background=dark
-colorscheme solarized
+colorscheme asmanian2
+"colorscheme solarized
 "colorscheme molokai
 "colorscheme phd
 
@@ -351,50 +354,53 @@ nnoremap <Leader>rwc :call Replace(1, 1, input('Replace '.expand('<cword>').' wi
 "**************5.4  智能补全 
 
 "*****  基于标签的智能补全
-"set tags+=~/src/workspace/RBMaster_main/jni/rbmaster.tags
-set tags+=~/src/workspace/RBMaster_vpn/jni/rbmaster.tags
-"set tags+=/home/tyxm/src/ubuntu_src/jsoncpp/jsoncpp.tags 
-
 "ctags -R --c++-kinds=+l+x+p --fields=+iaSl --extra=+q --language-force=c++ -f  stdcpp.tags
 set tags+=/usr/include/c++/4.8/stdcpp.tags
+
+"set tags+=~/src/workspace/RBMaster_main/jni/rbmaster.tags
+set tags+=~/src/workspace/RBMaster_vpn/jni/rbmaster.tags
+"set tags+=/home/tyxm/src/workspace/RBMasterXA/RBMaster/jni/rbmaster.tags
+"set tags+=/home/tyxm/src/ubuntu_src/jsoncpp/jsoncpp.tags 
+
+
 "ctags -R --c-kinds=+l+x+p --fields=+lS -I __THROW,__nonnull -f sys.tags
 "set tags+=/usr/include/sys.tags
 
+"set tags+=/home/tyxm/src/ubuntu_src/iptables_1_2_7/iptables.tags
+"set tags+=~/src/workspace/htc-kernel-msm7x30-master/htc_kernel.tags 
+"set tags+=/home/tyxm/src/other/android/external/ppp/pppd/pppd.tags 
 "set tags+=/home/tyxm/src/other/wifidog-gateway/wifi_dog.tags
 "set tags+=/home/tyxm/src/git_manager/pptp-1.8.0/pptp.tags
+"set tags+=/home/tyxm/src/other/android/external/mtpd/mtpd.tags
+"set tags+=/home/tyxm/tmp/android/external/ppp/pppd/pppd.tags
 let OmniCpp_DefaultNamespaces = ["_GLIBCXX_STD"] 
 
 
 "*****  基于语义的智能补全
 " YCM 补全菜单配色
 " 菜单
-"highlight Pmenu ctermfg=2 ctermbg=3 guifg=#005f87 guibg=#EEE8D5
+highlight Pmenu ctermfg=2 ctermbg=3 guifg=#005f87 guibg=#EEE8D5
 " 选中项
-"highlight PmenuSel ctermfg=2 ctermbg=3 guifg=#AFD700 guibg=#106900
+highlight PmenuSel ctermfg=2 ctermbg=3 guifg=#AFD700 guibg=#106900
 " 补全功能在注释中同样有效
-"let g:ycm_complete_in_comments=1
+let g:ycm_complete_in_comments=1
 " 允许 vim 加载 .ycm_extra_conf.py 文件，不再提示
 let g:ycm_confirm_extra_conf=0
 " 开启 YCM 标签补全引擎
-"let g:ycm_collect_identifiers_from_tags_files=1
+let g:ycm_collect_identifiers_from_tags_files=1
 " 引入 C++ 标准库tags
 "set tags+=/usr/include/c++/4.8/stdcpp.tags
 " YCM 集成 OmniCppComplete 补全引擎，设置其快捷键
-"inoremap <leader>; <C-x><C-o>
+inoremap <leader>; <C-x><C-o>
 " 补全内容不以分割子窗口形式出现，只显示补全列表
-"set completeopt-=preview
+set completeopt-=preview
 " 从第一个键入字符就开始罗列匹配项
-"let g:ycm_min_num_of_chars_for_completion=1
+let g:ycm_min_num_of_chars_for_completion=1
 " 禁止缓存匹配项，每次都重新生成匹配项
-"let g:ycm_cache_omnifunc=0
+let g:ycm_cache_omnifunc=0
 " 语法关键字补全         
-"let g:ycm_seed_identifiers_with_syntax=1
+let g:ycm_seed_identifiers_with_syntax=1
 
-
-" 开启 YCM 标签引擎
-"let g:ycm_collect_identifiers_from_tags_files=1
-" 引入 C++ 标准库tags
-"set tags+=/usr/include/c++/4.8/stdcpp.tags
 
 "************** 6.1 工程文件浏览
 
@@ -427,4 +433,19 @@ set undofile
 map <leader>ss :mksession! my.vim<cr> :wviminfo! my.viminfo<cr>
 " 恢复快捷键
 map <leader>rs :source my.vim<cr> :rviminfo my.viminfo<cr>
+
+" 快速编辑结对符
+
+" 快捷键
+map <SPACE> <Plug>(wildfire-fuel)
+vmap <S-SPACE> <Plug>(wildfire-water)
+" " 适用于哪些结对符
+let g:wildfire_objects = ["i'", 'i"', "i)", "i]", "i}", "i>", "ip"]
+"*********** 7.1一键编译
+
+"********* 7.2 静态分析器集成
+let g:syntastic_error_symbol = '✗'
+let g:syntastic_warning_symbol = '⚠'
+
+
 
